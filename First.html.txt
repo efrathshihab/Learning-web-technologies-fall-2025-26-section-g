@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<tittle>First</tittle>
+
+</head>
+
+<body>
+<h1>
+
+<li>Name:Tajkinur Rahman</li>
+<li>ID:22-47143-1</li>
+<li>HSC Batch:2020</li>
+<li>SSC Batch:2018</li>
+</h1>
+
+</body>
+
+</html>
