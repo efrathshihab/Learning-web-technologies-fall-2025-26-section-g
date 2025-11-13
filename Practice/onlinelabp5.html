@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>onlinelab</title>
+</head>
+
+<body>
+    <form onsubmit="return test()">
+        <p>degree</p>
+        <input type="radio" id="male" name="gender" value="Male" onclick="testGender()">
+        <label for="male">SSC</label><br>
+        <input type="radio" id="female" name="gender" value="Female" onclick="testGender()">
+        <label for="female">HSC</label><br>
+        <input type="radio" id="other" name="gender" value="Other" onclick="testGender()">
+        <label for="other">BSC</label>
+        <p id="gError"></p>
+        <input type="submit" value="Submit" />
+    </form>
+
+    <script>
+        let male = document.getElementById('male');
+        let female = document.getElementById('female');
+        let other = document.getElementById('other');
+        let gError = document.getElementById('gError');
+
+        function testGender() {
+            let errorMsg = "";
+            if (!male.checked && !female.checked && !other.checked) {
+
+            }
+            if (errorMsg !== "") {
+                gError.innerHTML = errorMsg;
+                gError.style.color = "red";
+            } else {
+
+                gError.style.color = "green";
+            }
+        }
+
+        function test() {
+            testGender();
+            if (gError.innerHTML === "Valid gender!") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>

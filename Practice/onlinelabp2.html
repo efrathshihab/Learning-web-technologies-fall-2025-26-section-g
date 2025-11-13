@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>online lab</title>
+</head>
+
+<body>
+    <h1>Email</h1>
+    <form onsubmit="return test()">
+        <textarea id="emailBox" onblur="testEmail()"></textarea>
+        <h6>hint: sample@example.com</h6>
+        <p id="eError"></p>
+        <input type="submit" value="Submit" />
+    </form>
+
+    <script>
+        let emailBox = document.getElementById('emailBox');
+        let eError = document.getElementById('eError');
+
+        function testEmail() {
+            let value = emailBox.value;
+            let trimmed = value.trim();
+            let errorMsg = "";
+
+            if (trimmed.length === 0) {
+                errorMsg = "Email cannot be empty.";
+            } else {
+                let hasSpace = false;
+                for (let i = 0; i < trimmed.length; i++) {
+                    if (trimmed[i] === " ") {
+                        hasSpace = true;
+                        break;
+                    }
+                }
+                if (hasSpace) {
+                    errorMsg = "Email cannot contain spaces.";
+                } else {
+                    let atIndex = trimmed.indexOf("@");
+                    let lastAt = trimmed.lastIndexOf("@");
+                    if (atIndex <= 0) {
+                        errorMsg = "Email must have text before '@'.";
+                    } else if (lastAt !== atIndex) {
+                        errorMsg = "Email must contain only one '@'.";
+                    } else {
+                        let dotIndex = trimmed.lastIndexOf(".");
+                        if (dotIndex < atIndex + 2) {
+                            errorMsg = "Email must have '.' after '@' with text between.";
+                        } else if (dotIndex === trimmed.length - 1) {
+                            errorMsg = "Email must have text after '.'.";
+                        }
+                    }
+                }
+            }
+
+            if (errorMsg !== "") {
+                eError.innerHTML = errorMsg;
+                eError.style.color = "red";
+            } else {
+                eError.innerHTML = "Valid email!";
+                eError.style.color = "green";
+            }
+        }
+
+        function test() {
+            testEmail();
+            if (eError.innerHTML === "Valid email!") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>

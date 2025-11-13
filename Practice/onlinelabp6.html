@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>online lab</title>
+</head>
+
+<body>
+    <form onsubmit="return test()">
+        <label for="bloodGroup">Blood Group</label>
+        <select name="bloodGroup" id="bloodGroup" onblur="testBlood()">
+            <option value="">Select</option>
+            <option value="A+">A+</option>
+            <option value="B+">B+</option>
+            <option value="AB+">AB+</option>
+            <option value="A-">A-</option>
+            <option value="B-">B-</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+        </select>
+        <p id="bError"></p>
+        <input type="submit" value="Submit" />
+    </form>
+
+    <script>
+        let bloodGroup = document.getElementById('bloodGroup');
+        let bError = document.getElementById('bError');
+
+        function testBlood() {
+            let errorMsg = "";
+            if (bloodGroup.value === "") {
+                errorMsg = "Blood group must be selected.";
+            }
+            if (errorMsg !== "") {
+                bError.innerHTML = errorMsg;
+                bError.style.color = "red";
+            } else {
+                bError.innerHTML = "Valid blood group!";
+                bError.style.color = "green";
+            }
+        }
+
+        function test() {
+            testBlood();
+            if (bError.innerHTML === "Valid blood group!") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>

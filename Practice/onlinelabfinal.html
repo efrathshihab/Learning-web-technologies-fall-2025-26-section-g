@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>online lab</title>
+</head>
+
+<body>
+    <form onsubmit="return test()">
+        <h1>Name</h1>
+        <textarea id="nameBox" onblur="testName()"></textarea>
+        <p id="nError"></p>
+
+        <h1>Email</h1>
+        <textarea id="emailBox" onblur="testEmail()"></textarea>
+        <h6>hint: sample@example.com</h6>
+        <p id="eError"></p>
+
+        <h1>Gender</h1>
+        <input type="radio" id="male" name="gender" value="Male" onclick="testGender()">
+        <label for="male">Male</label><br>
+        <input type="radio" id="female" name="gender" value="Female" onclick="testGender()">
+        <label for="female">Female</label><br>
+        <input type="radio" id="other" name="gender" value="Other" onclick="testGender()">
+        <label for="other">Other</label>
+        <p id="gError"></p>
+
+        <h1>Degree</h1>
+        <input type="radio" id="ssc" name="degree" value="SSC" onclick="testDegree()">
+        <label for="ssc">SSC</label><br>
+        <input type="radio" id="hsc" name="degree" value="HSC" onclick="testDegree()">
+        <label for="hsc">HSC</label><br>
+        <input type="radio" id="bsc" name="degree" value="BSC" onclick="testDegree()">
+        <label for="bsc">BSC</label>
+        <p id="dError"></p>
+
+        <h1>Blood Group</h1>
+        <label for="bloodGroup">Blood Group</label>
+        <select name="bloodGroup" id="bloodGroup" onblur="testBlood()">
+            <option value="">Select</option>
+            <option value="A+">A+</option>
+            <option value="B+">B+</option>
+            <option value="AB+">AB+</option>
+            <option value="A-">A-</option>
+            <option value="B-">B-</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+        </select>
+        <p id="bError"></p>
+
+        <h1>User id</h1>
+        <textarea id="userId" onblur="testUserId()"></textarea>
+        <p id="uError"></p>
+
+        <h1>Picture</h1>
+        <input type="file" id="picture" name="picture" onchange="testPicture()">
+        <p id="pError"></p>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        let nameBox = document.getElementById('nameBox');
+        let nError = document.getElementById('nError');
+
+        let emailBox = document.getElementById('emailBox');
+        let eError = document.getElementById('eError');
+
+        let male = document.getElementById('male');
+        let female = document.getElementById('female');
+        let other = document.getElementById('other');
+        let gError = document.getElementById('gError');
+
+        let ssc = document.getElementById('ssc');
+        let hsc = document.getElementById('hsc');
+        let bsc = document.getElementById('bsc');
+        let dError = document.getElementById('dError');
+
+        let bloodGroup = document.getElementById('bloodGroup');
+        let bError = document.getElementById('bError');
+
+        let userId = document.getElementById('userId');
+        let picture = document.getElementById('picture');
+        let uError = document.getElementById('uError');
+        let pError = document.getElementById('pError');
+
+        function isLetter(ch) {
+            let code = ch.charCodeAt(0);
+            if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function isDigit(ch) {
+            let code = ch.charCodeAt(0);
+            if (code >= 48 && code <= 57) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function testName() {
+            let value = nameBox.value;
+            let trimmed = value.trim();
+            let errorMsg = "";
+
+            if (trimmed.length === 0) {
+                errorMsg = "Name cannot be empty.";
+            } else {
+                let firstChar = trimmed[0];
+                if (!isLetter(firstChar)) {
+                    errorMsg = "Name must start with a letter.";
+                } else {
+                    let parts = trimmed.split(" ");
+                    let words = [];
+                    for (let i = 0; i < parts.length; i++) {
+                        if (parts[i].length > 0) {
+                            words.push(parts[i]);
+                        }
+                    }
+                    if (words.length < 2) {
+                        errorMsg = "Name must contain at least two words.";
+                    } else {
+                        for (let j = 0; j < value.length; j++) {
+                            let ch = value[j];
+                            if (ch === " ") {
+                                continue;
+                            }
+                            if (!isLetter(ch) && ch !== "." && ch !== "-") {
+                                errorMsg = "Name can contain only letters, dot (.) or dash (-).";
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (errorMsg !== "") {
+                nError.innerHTML = errorMsg;
+                nError.style.color = "red";
+            } else {
+                nError.innerHTML = "Valid name!";
+                nError.style.color = "green";
+            }
+        }
+
+        function testEmail() {
+            let value = emailBox.value;
+            let trimmed = value.trim();
+            let errorMsg = "";
+
+            if (trimmed.length === 0) {
+                errorMsg = "Email cannot be empty.";
+            } else {
+                let hasSpace = false;
+                for (let i = 0; i < trimmed.length; i++) {
+                    if (trimmed[i] === " ") {
+                        hasSpace = true;
+                        break;
+                    }
+                }
+                if (hasSpace) {
+                    errorMsg = "Email cannot contain spaces.";
+                } else {
+                    let atIndex = trimmed.indexOf("@");
+                    let lastAt = trimmed.lastIndexOf("@");
+                    if (atIndex <= 0) {
+                        errorMsg = "Email must have text before '@'.";
+                    } else if (lastAt !== atIndex) {
+                        errorMsg = "Email must contain only one '@'.";
+                    } else {
+                        let dotIndex = trimmed.lastIndexOf(".");
+                        if (dotIndex < atIndex + 2) {
+                            errorMsg = "Email must have '.' after '@' with text between.";
+                        } else if (dotIndex === trimmed.length - 1) {
+                            errorMsg = "Email must have text after '.'.";
+                        }
+                    }
+                }
+            }
+
+            if (errorMsg !== "") {
+                eError.innerHTML = errorMsg;
+                eError.style.color = "red";
+            } else {
+                eError.innerHTML = "Valid email!";
+                eError.style.color = "green";
+            }
+        }
+
+        function testGender() {
+            let errorMsg = "";
+            if (!male.checked && !female.checked && !other.checked) {
+                errorMsg = "At least one gender must be selected.";
+            }
+            if (errorMsg !== "") {
+                gError.innerHTML = errorMsg;
+                gError.style.color = "red";
+            } else {
+                gError.innerHTML = "Valid gender!";
+                gError.style.color = "green";
+            }
+        }
+
+        function testDegree() {
+            let errorMsg = "";
+            if (!ssc.checked && !hsc.checked && !bsc.checked) {
+                errorMsg = "At least one degree must be selected.";
+            }
+            if (errorMsg !== "") {
+                dError.innerHTML = errorMsg;
+                dError.style.color = "red";
+            } else {
+                dError.innerHTML = "Valid degree!";
+                dError.style.color = "green";
+            }
+        }
+
+        function testBlood() {
+            let errorMsg = "";
+            if (bloodGroup.value === "") {
+                errorMsg = "Blood group must be selected.";
+            }
+            if (errorMsg !== "") {
+                bError.innerHTML = errorMsg;
+                bError.style.color = "red";
+            } else {
+                bError.innerHTML = "Valid blood group!";
+                bError.style.color = "green";
+            }
+        }
+
+        function testUserId() {
+            let value = userId.value;
+            let trimmed = value.trim();
+            let errorMsg = "";
+
+            if (trimmed.length === 0) {
+                errorMsg = "UserId cannot be empty.";
+            } else {
+                let allDigits = true;
+                for (let i = 0; i < trimmed.length; i++) {
+                    if (!isDigit(trimmed[i])) {
+                        allDigits = false;
+                        break;
+                    }
+                }
+                if (!allDigits) {
+                    errorMsg = "UserId must be a positive number.";
+                } else {
+                    let num = Number(trimmed);
+                    if (num <= 0) {
+                        errorMsg = "UserId must be a positive number.";
+                    }
+                }
+            }
+
+            if (errorMsg !== "") {
+                uError.innerHTML = errorMsg;
+                uError.style.color = "red";
+            } else {
+                uError.innerHTML = "Valid userId!";
+                uError.style.color = "green";
+            }
+        }
+
+        function testPicture() {
+            let errorMsg = "";
+            if (picture.value === "") {
+                errorMsg = "Picture cannot be empty.";
+            }
+            if (errorMsg !== "") {
+                pError.innerHTML = errorMsg;
+                pError.style.color = "red";
+            } else {
+                pError.innerHTML = "Valid picture!";
+                pError.style.color = "green";
+            }
+        }
+
+        function test() {
+            testName();
+            testEmail();
+            testGender();
+            testDegree();
+            testBlood();
+            testUserId();
+            testPicture();
+
+            if (
+                nError.innerHTML === "Valid name!" &&
+                eError.innerHTML === "Valid email!" &&
+                gError.innerHTML === "Valid gender!" &&
+                dError.innerHTML === "Valid degree!" &&
+                bError.innerHTML === "Valid blood group!" &&
+                uError.innerHTML === "Valid userId!" &&
+                pError.innerHTML === "Valid picture!"
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>
