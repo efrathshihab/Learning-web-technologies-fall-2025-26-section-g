@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Lab 7 number1</title>
+</head>
+
+<body>
+    <h1>name</h1>
+    <form onsubmit="return test()">
+        <textarea id="nameBox" onblur="testName()"></textarea>
+        <p id="nError"></p>
+        <input type="submit" value="Submit" />
+    </form>
+
+
+
+    <script>
+        let nameBox = document.getElementById('nameBox');
+        let nError = document.getElementById('nError');
+
+        function isLetter(ch) {
+            let code = ch.charCodeAt(0);
+            if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function testName() {
+            let value = nameBox.value;
+            let trimmed = value.trim();
+            let errorMsg = "";
+
+            if (trimmed.length === 0) {
+                errorMsg = "Name cannot be empty.";
+            } else {
+                let firstChar = trimmed[0];
+                if (!isLetter(firstChar)) {
+                    errorMsg = "Name must start with a letter.";
+                } else {
+                    let parts = trimmed.split(" ");
+                    let words = [];
+                    for (let i = 0; i < parts.length; i++) {
+                        if (parts[i].length > 0) {
+                            words.push(parts[i]);
+                        }
+                    }
+                    if (words.length < 2) {
+                        errorMsg = "Name must contain at least two words.";
+                    } else {
+                        for (let j = 0; j < value.length; j++) {
+                            let ch = value[j];
+                            if (ch === " ") {
+                                continue;
+                            }
+                            if (!isLetter(ch) && ch !== "." && ch !== "-") {
+                                errorMsg = "Name can contain only letters, dot (.) or dash (-).";
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (errorMsg !== "") {
+                nError.innerHTML = errorMsg;
+                nError.style.color = "red";
+            } else {
+                nError.innerHTML = "Valid name!";
+                nError.style.color = "green";
+            }
+        }
+
+        function test() {
+            testName();
+            if (nError.innerHTML === "Valid name!") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+
+        
+    </script>
+</body>
+
+</html>Practice Codes is Here
