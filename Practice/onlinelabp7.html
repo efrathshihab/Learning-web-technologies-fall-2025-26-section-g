@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <form onsubmit="return test()">
+        <h1>User id</h1>
+        <textarea id="userId" onblur="testUserId()"></textarea>
+        <p id="uError"></p>
+
+        <h1>Picture</h1>
+        <input type="file" id="picture" name="picture" onchange="testPicture()">
+        <p id="pError"></p>
+
+        <input type="submit" name="submit" value="Submit">
+    </form>
+
+    <script>
+        let userId = document.getElementById('userId');
+        let picture = document.getElementById('picture');
+        let uError = document.getElementById('uError');
+        let pError = document.getElementById('pError');
+
+        function isDigit(ch){
+            let code = ch.charCodeAt(0);
+            if(code >= 48 && code <= 57){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        function testUserId(){
+            let value = userId.value;
+            let trimmed = value.trim();
+            let errorMsg = "";
+
+            if(trimmed.length === 0){
+                errorMsg = "UserId cannot be empty.";
+            }else{
+                let allDigits = true;
+                for(let i = 0; i < trimmed.length; i++){
+                    if(!isDigit(trimmed[i])){
+                        allDigits = false;
+                        break;
+                    }
+                }
+                if(!allDigits){
+                    errorMsg = "UserId must be a positive number.";
+                }else{
+                    let num = Number(trimmed);
+                    if(num <= 0){
+                        errorMsg = "UserId must be a positive number.";
+                    }
+                }
+            }
+
+            if(errorMsg !== ""){
+                uError.innerHTML = errorMsg;
+                uError.style.color = "red";
+            }else{
+                uError.innerHTML = "Valid userId!";
+                uError.style.color = "green";
+            }
+        }
+
+        function testPicture(){
+            let errorMsg = "";
+            if(picture.value === ""){
+                errorMsg = "Picture cannot be empty.";
+            }
+            if(errorMsg !== ""){
+                pError.innerHTML = errorMsg;
+                pError.style.color = "red";
+            }else{
+                pError.innerHTML = "Valid picture!";
+                pError.style.color = "green";
+            }
+        }
+
+        function test(){
+            testUserId();
+            testPicture();
+            if(uError.innerHTML === "Valid userId!" && pError.innerHTML === "Valid picture!"){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
