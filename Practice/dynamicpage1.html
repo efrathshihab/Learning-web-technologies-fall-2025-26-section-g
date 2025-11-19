@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Last lab task of mid</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 20px;
+        }
+
+        select, textarea, input[type="radio"] {
+            font-size: 20px;
+            margin-top: 5px;
+        }
+
+        textarea {
+            width: 400px;
+            height: 80px;
+            padding: 10px;
+            font-size: 20px;
+        }
+
+        button {
+            font-size: 22px;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+            background: #007bff;
+            color: white;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #fieldsContainer div {
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h3 style="font-size: 26px;">Select type and click Add</h3>
+
+    <select id="typeSelect">
+        <option value="text">Text</option>
+        <option value="number">Number</option>
+        <option value="radio">Radio</option>
+        <option value="dateofbirth">DateOfBirth</option>
+    </select>
+    <br><br>
+
+    <button id="addBtn">Add</button>
+    <br><br>
+
+    <div id="fieldsContainer"></div>
+
+    <button id="saveBtn">Save</button>
+    <div id="output" style="margin-top: 20px;"></div>
+
+    <script>
+        let typeSelect = document.getElementById('typeSelect');
+        let addBtn = document.getElementById('addBtn');
+        let saveBtn = document.getElementById('saveBtn');
+        let fieldsContainer = document.getElementById('fieldsContainer');
+        let output = document.getElementById('output');
+        let fields = [];
+        let radioCount = 0;
+
+        addBtn.addEventListener('click', function () {
+            let kind = typeSelect.value;
+            let wrapper = document.createElement('div');
+
+            let label = document.createElement('p');
+            label.style.fontSize = "22px";
+            let fieldObj = { type: kind };
+
+            if (kind === 'text') {
+                label.textContent = 'Text';
+                let area = document.createElement('textarea');
+                area.addEventListener('input', function () {
+                    let v = area.value;
+                    let cleaned = '';
+                    for (let i = 0; i < v.length; i++) {
+                        let ch = v[i];
+                        if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || ch === ' ') {
+                            cleaned += ch;
+                        }
+                    }
+                    if (cleaned !== v) {
+                        area.value = cleaned;
+                    }
+                });
+                wrapper.appendChild(label);
+                wrapper.appendChild(area);
+                fieldObj.element = area;
+            } else if (kind === 'number') {
+                label.textContent = 'Number';
+                let area = document.createElement('textarea');
+                area.addEventListener('input', function () {
+                    let v = area.value;
+                    let cleaned = '';
+                    for (let i = 0; i < v.length; i++) {
+                        let ch = v[i];
+                        if (ch >= '0' && ch <= '9') {
+                            cleaned += ch;
+                        }
+                    }
+                    if (cleaned !== v) {
+                        area.value = cleaned;
+                    }
+                });
+                wrapper.appendChild(label);
+                wrapper.appendChild(area);
+                fieldObj.element = area;
+            } else if (kind === 'dateofbirth') {
+                label.textContent = 'Date Of Birth (dd/mm/yyyy)';
+                let area = document.createElement('textarea');
+                area.addEventListener('input', function () {
+                    let v = area.value;
+                    let cleaned = '';
+                    for (let i = 0; i < v.length; i++) {
+                        let ch = v[i];
+                        if ((ch >= '0' && ch <= '9') || ch === '/' || ch === '-') {
+                            cleaned += ch;
+                        }
+                    }
+                    if (cleaned !== v) {
+                        area.value = cleaned;
+                    }
+                });
+                wrapper.appendChild(label);
+                wrapper.appendChild(area);
+                fieldObj.element = area;
+            } else if (kind === 'radio') {
+                label.textContent = 'Radio';
+                let name = 'radioGroup' + radioCount;
+                radioCount++;
+
+                let r1 = document.createElement('input');
+                r1.type = 'radio';
+                r1.name = name;
+                r1.value = 'Option 1';
+
+                let r1Label = document.createElement('span');
+                r1Label.textContent = ' Option 1 ';
+                r1Label.style.fontSize = "20px";
+
+                let r2 = document.createElement('input');
+                r2.type = 'radio';
+                r2.name = name;
+                r2.value = 'Option 2';
+
+                let r2Label = document.createElement('span');
+                r2Label.textContent = ' Option 2 ';
+                r2Label.style.fontSize = "20px";
+
+                wrapper.appendChild(label);
+                wrapper.appendChild(r1);
+                wrapper.appendChild(r1Label);
+                wrapper.appendChild(r2);
+                wrapper.appendChild(r2Label);
+
+                fieldObj.radios = [r1, r2];
+            }
+
+            fieldsContainer.appendChild(wrapper);
+            fields.push(fieldObj);
+        });
+
+        saveBtn.addEventListener('click', function () {
+            output.innerHTML = '';
+            for (let i = 0; i < fields.length; i++) {
+                let f = fields[i];
+                let p = document.createElement('p');
+                p.style.fontSize = "22px";
+
+                if (f.type === 'text') {
+                    let v = f.element.value.trim();
+                    if (v.length === 0) continue;
+                    p.textContent = 'Your Text is "' + v + '"';
+                } else if (f.type === 'number') {
+                    let v = f.element.value.trim();
+                    if (v.length === 0) continue;
+                    p.textContent = 'Your Number is "' + v + '"';
+                } else if (f.type === 'dateofbirth') {
+                    let v = f.element.value.trim();
+                    if (v.length === 0) continue;
+                    p.textContent = 'Your DateOfBirth is "' + v + '"';
+                } else if (f.type === 'radio') {
+                    let chosen = '';
+                    for (let j = 0; j < f.radios.length; j++) {
+                        if (f.radios[j].checked) {
+                            chosen = f.radios[j].value;
+                        }
+                    }
+                    if (chosen === '') continue;
+                    p.textContent = 'Your Radio is "' + chosen + '"';
+                }
+
+                output.appendChild(p);
+            }
+        });
+    </script>
+</body>
+
+</html>
