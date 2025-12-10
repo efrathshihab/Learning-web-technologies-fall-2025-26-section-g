@@ -34,14 +34,14 @@ function validateLostItem() {
         showError("lostItemError", "Contact phone must be at least 6 digits");
         return false;
     }
-    // basic date validation: ensure a valid date string and not in the future
+
     var dateObj = new Date(dateLost);
     if (isNaN(dateObj.getTime())) {
         showError("lostItemError", "Please enter a valid date");
         return false;
     }
     var today = new Date();
-    // zero out time for comparison
+    
     today.setHours(0,0,0,0);
     dateObj.setHours(0,0,0,0);
     if (dateObj > today) {
@@ -49,7 +49,7 @@ function validateLostItem() {
         return false;
     }
 
-    // build item object and save to localStorage
+    
     var items = [];
     try {
         items = JSON.parse(localStorage.getItem('lostItems') || '[]');
@@ -69,8 +69,7 @@ function validateLostItem() {
     items.unshift(newItem);
     localStorage.setItem('lostItems', JSON.stringify(items));
 
-    // optional: redirect to view page
     window.location.href = 'ViewLostItems.html';
-    return false; // prevent default form submit since we handled it
+    return false;
 }
-}
+

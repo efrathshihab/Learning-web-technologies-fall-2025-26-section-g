@@ -38,7 +38,7 @@
   </div>
 
   <script>
-    // Safe read of localStorage
+  
     function getItems(){
       try { return JSON.parse(localStorage.getItem('lostItems')||'[]'); } catch(e){ return []; }
     }
@@ -51,7 +51,7 @@
       const items = getItems();
       const recent = items.slice(0,3);
 
-      // If less than 3 items, show placeholders
+    
       for (let i=0;i<3;i++){
         const card = document.createElement('div');
         card.className = 'card';

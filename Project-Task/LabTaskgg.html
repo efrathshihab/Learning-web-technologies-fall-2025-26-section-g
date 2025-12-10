@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task1</title>
+</head>
+<body>
+
+    // task : 1
+  <form method="post" action="LabTask2.php" enctype="application/x-www-form-urlencoded">
+        <label>
+            Length:
+            <input type="number" name="length" step="any" min="0" required value="<?php echo $length !== null ? htmlspecialchars($length) : '' ?>">
+        </label>
+        <label>
+            Width:
+            <input type="number" name="width" step="any" min="0" required value="<?php echo $width !== null ? htmlspecialchars($width) : '' ?>">
+        </label>
+        <button type="submit">Calculate</button>
+    </form>  
+
+
+    // task : 2
+
+    <h2>VAT Calculator (15%)</h2>
+
+    <form method="post" action="LabTask2.php" enctype="application/x-www-form-urlencoded">
+        <label>
+            Amount:
+            <input type="number" name="amount" step="any" min="0" required>
+        </label>
+        <button type="submit">Calculate VAT</button>
+    </form>
+
+
+    //task:3
+
+
+    <h2>Odd or Even Checker</h2>
+
+    <form method="post" action="LabTask2.php" enctype="application/x-www-form-urlencoded">
+        <label>
+            Enter a number:
+            <input type="number" name="number" step="1" required>
+        </label>
+        <button type="submit">Check</button>
+    </form>
+
+    //task:4
+
+<h2>Find the largest Number</h2>
+
+    <form method="post" action="LabTask2.php" enctype="application/x-www-form-urlencoded">
+        <label>
+            First Number:
+            <input type="number" name="num1" step="any" required>
+        </label>
+        <br><br>
+        <label>
+            Second Number:
+            <input type="number" name="num2" step="any" required>
+        </label>
+        <br><br>
+        <label>
+            Third Number:
+            <input type="number" name="num3" step="any" required>
+        </label>
+        <br><br>
+        <button type="submit">Find Largest</button>
+    </form>
+</body>
+</html>
