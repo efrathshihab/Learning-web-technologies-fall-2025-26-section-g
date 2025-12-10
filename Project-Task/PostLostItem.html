@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Post Lost Item</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; margin:24px; }
+        fieldset { max-width:560px; }
+        table td { padding:6px; }
+        input[type="text"], input[type="date"] { width:100%; padding:6px; box-sizing:border-box; }
+        .top-actions { margin-bottom:12px; }
+        .top-actions a { margin-right:12px; }
+    </style>
+</head>
+<body>
+    <div class="top-actions">
+        <a href="ViewLostItems.html">View Lost Items</a>
+    </div>
+    <form method="post" action="#" onsubmit="return validateLostItem();">
+        <fieldset>
+            <legend>Post Lost Item</legend>
+            <table>
+                <tr>
+                    <td>Item Name</td>
+                    <td><input type="text" id="lost_item_name" name="item_name" value=""></td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td><input type="text" id="lost_description" name="description" value=""></td>
+                </tr>
+                <tr>
+                    <td>Location Lost</td>
+                    <td><input type="text" id="lost_location" name="location_lost" value=""></td>
+                </tr>
+                <tr>
+                    <td>Date Lost</td>
+                    <td><input type="date" id="lost_date" name="date_lost" value=""></td>
+                </tr>
+                <tr>
+                    <td>Contact Phone</td>
+                    <td><input type="text" id="lost_phone" name="contact_phone" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" name="submit" value="Submit"></td>
+                </tr>
+            </table>
+            <p id="lostItemError" style="color:red;"></p>
+        </fieldset>
+    </form>
+
+<script src="lostItemValidation.js"></script>
+
+</body>
+</html>

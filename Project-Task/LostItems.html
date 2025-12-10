@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lost Items - Summary</title>
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin:20px; }
+    h1 { margin-bottom:8px }
+    .grid { display:flex; gap:12px; max-width:960px; }
+    .card { flex:1 1 0; border:1px solid #ddd; padding:12px; border-radius:6px; background:#fff; min-height:90px; cursor:pointer; }
+    .card .name { font-weight:700; font-size:1.05rem }
+    .card .meta { color:#666; margin-top:6px }
+    .no-items { color:#888; text-align:center; padding:18px }
+    .details { margin-top:18px; border-top:1px solid #eee; padding-top:12px; display:none }
+    .controls { margin-bottom:12px }
+    .controls a, .controls button { margin-right:10px }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <a href="PostLostItem.html">Post New Item</a>
+    <a href="ViewLostItems.html">Full View</a>
+    <button id="clear">Clear All</button>
+  </div>
+
+  <h1>Latest Lost Items</h1>
+
+  <div id="grid" class="grid" aria-live="polite"></div>
+
+  <div id="details" class="details" aria-hidden="true">
+    <h3 id="dName"></h3>
+    <p id="dDesc" style="margin:6px 0;color:#444"></p>
+    <p class="meta"><strong>Location:</strong> <span id="dLocation"></span></p>
+    <p class="meta"><strong>Date:</strong> <span id="dDate"></span></p>
+    <p class="meta"><strong>Contact:</strong> <span id="dPhone"></span></p>
+    <p><button id="closeDetails">Close</button></p>
+  </div>
+
+  <script>
+    // Safe read of localStorage
+    function getItems(){
+      try { return JSON.parse(localStorage.getItem('lostItems')||'[]'); } catch(e){ return []; }
+    }
+
+    function formatDate(d){ try { return new Date(d).toLocaleDateString(); } catch(e){ return d } }
+
+    function renderGrid(){
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      const items = getItems();
+      const recent = items.slice(0,3);
+
+      // If less than 3 items, show placeholders
+      for (let i=0;i<3;i++){
+        const card = document.createElement('div');
+        card.className = 'card';
+        if (recent[i]){
+          const it = recent[i];
+          card.innerHTML = `<div class="name">${escapeHtml(it.name)}</div><div class="meta">${escapeHtml(it.location)} • ${formatDate(it.date)}</div>`;
+          card.addEventListener('click', ()=> showDetails(it));
+        } else {
+          card.innerHTML = '<div class="no-items">No item</div>';
+        }
+        grid.appendChild(card);
+      }
+    }
+
+    function showDetails(item){
+      document.getElementById('dName').textContent = item.name;
+      document.getElementById('dDesc').textContent = item.description || '';
+      document.getElementById('dLocation').textContent = item.location || '';
+      document.getElementById('dDate').textContent = formatDate(item.date || '');
+      document.getElementById('dPhone').textContent = item.phone || '';
+      document.getElementById('details').style.display = 'block';
+      document.getElementById('details').setAttribute('aria-hidden','false');
+      document.getElementById('details').scrollIntoView({behavior:'smooth'});
+    }
+
+    function escapeHtml(s){ if (!s) return ''; return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
+
+    document.getElementById('closeDetails').addEventListener('click', function(){
+      document.getElementById('details').style.display = 'none';
+      document.getElementById('details').setAttribute('aria-hidden','true');
+    });
+
+    document.getElementById('clear').addEventListener('click', function(){ if (confirm('Clear all lost items?')){ localStorage.removeItem('lostItems'); renderGrid(); document.getElementById('details').style.display='none'; } });
+
+    renderGrid();
+  </script>
+</body>
+</html>
